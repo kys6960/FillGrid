@@ -248,8 +248,8 @@
         <p class="note" data-k="heroNote">Windows 10 · 11 · 무료로 쓰고, 필요할 때만 Pro (한 번 구입)</p>
       </div>
       <div class="stack" aria-hidden="true">
-        <img class="page back" src="img/d04.jpg" alt="" width="1200" height="848" fetchpriority="high">
-        <img class="page front" src="img/j04.jpg" alt="" width="1200" height="848" fetchpriority="high">
+        <img class="page back" src="img/d04.jpg" data-s="d04" alt="" width="1200" height="848" fetchpriority="high">
+        <img class="page front" src="img/j04.jpg" data-s="j04" alt="" width="1200" height="848" fetchpriority="high">
         <img class="sticker a" src="img/mochi_diary_writing.png" alt="">
         <img class="sticker b" src="img/dubu_mood_happy.png" alt="">
       </div>
@@ -268,13 +268,13 @@
         <p data-k="persona">지은 (26) — 자취 3년 차 · IT 회사 다니는 직장인. 갓생과 게으름 사이를 오가며, 소소한 기쁨을 하루 한 줄씩 남깁니다.</p>
       </div>
       <div class="gallery">
-        <figure class="shot g-half"><img src="img/d04.jpg" alt="" width="1200" height="848" loading="lazy" decoding="async"><figcaption data-k="capMonthly">먼슬리 — 달의 목표 · 기분 · 작은 기쁨</figcaption></figure>
-        <figure class="shot g-half"><img src="img/j03.jpg" alt="" width="1200" height="848" loading="lazy" decoding="async"><figcaption data-k="capJournal">하루 일기 — 네 컷 · 영수증 · 오늘의 플레이리스트</figcaption></figure>
-        <figure class="shot g-third"><img src="img/j05.jpg" alt="" width="1200" height="848" loading="lazy" decoding="async"><figcaption data-k="capPhoto">사진 · 폴라로이드 · 무비 티켓</figcaption></figure>
-        <figure class="shot g-third"><img src="img/j08.jpg" alt="" width="1200" height="848" loading="lazy" decoding="async"><figcaption data-k="capFood">먹은 것도 기억으로</figcaption></figure>
-        <figure class="shot g-third"><img src="img/d28.jpg" alt="" width="1200" height="848" loading="lazy" decoding="async"><figcaption data-k="capWeekly">위클리 — 하루 한 칸 · 기분 · 습관</figcaption></figure>
-        <figure class="shot g-half"><img src="img/j07.jpg" alt="" width="1200" height="848" loading="lazy" decoding="async"><figcaption data-k="capSunset">마음에 남은 장면</figcaption></figure>
-        <figure class="shot g-half"><img src="img/p16.jpg" alt="" width="1200" height="848" loading="lazy" decoding="async"><figcaption data-k="capPlanner">플래너 — 할 일 · 습관 트래커 · 주간 회고 · 보상</figcaption></figure>
+        <figure class="shot g-half"><img src="img/d04.jpg" data-s="d04" alt="" width="1200" height="848" loading="lazy" decoding="async"><figcaption data-k="capMonthly">먼슬리 — 달의 목표 · 기분 · 작은 기쁨</figcaption></figure>
+        <figure class="shot g-half"><img src="img/j03.jpg" data-s="j03" alt="" width="1200" height="848" loading="lazy" decoding="async"><figcaption data-k="capJournal">하루 일기 — 네 컷 · 영수증 · 오늘의 플레이리스트</figcaption></figure>
+        <figure class="shot g-third"><img src="img/j05.jpg" data-s="j05" alt="" width="1200" height="848" loading="lazy" decoding="async"><figcaption data-k="capPhoto">사진 · 폴라로이드 · 무비 티켓</figcaption></figure>
+        <figure class="shot g-third"><img src="img/j08.jpg" data-s="j08" alt="" width="1200" height="848" loading="lazy" decoding="async"><figcaption data-k="capFood">먹은 것도 기억으로</figcaption></figure>
+        <figure class="shot g-third"><img src="img/d28.jpg" data-s="d28" alt="" width="1200" height="848" loading="lazy" decoding="async"><figcaption data-k="capWeekly">위클리 — 하루 한 칸 · 기분 · 습관</figcaption></figure>
+        <figure class="shot g-half"><img src="img/j07.jpg" data-s="j07" alt="" width="1200" height="848" loading="lazy" decoding="async"><figcaption data-k="capSunset">마음에 남은 장면</figcaption></figure>
+        <figure class="shot g-half"><img src="img/p16.jpg" data-s="p16" alt="" width="1200" height="848" loading="lazy" decoding="async"><figcaption data-k="capPlanner">플래너 — 할 일 · 습관 트래커 · 주간 회고 · 보상</figcaption></figure>
       </div>
     </div>
   </section>
@@ -484,6 +484,8 @@
     document.documentElement.lang = l;
     document.querySelectorAll("[data-k]").forEach(function (e) { var v = d[e.dataset.k]; if (v != null) e.innerHTML = v; });
     document.querySelectorAll("img[data-img]").forEach(function (e) { e.src = "img/" + e.dataset.img + "_" + l + ".jpg"; });
+    // 지은 샘플 — 한국어는 img/<이름>.jpg · 영·일은 그 언어로 꾸민 img/<언어>/<이름>.jpg (tools/make_sample_book.py 의 확인용 그림)
+    document.querySelectorAll("img[data-s]").forEach(function (e) { e.src = "img/" + (l === "ko" ? "" : l + "/") + e.dataset.s + ".jpg"; });
     document.querySelectorAll(".langs button").forEach(function (b) { b.setAttribute("aria-pressed", b.dataset.lang === l); });
     document.title = l === "ko" ? "손쉬운PDF · FillGrid" : "FillGrid · 손쉬운PDF";
     try { localStorage.setItem("fg_lang", l); } catch (e) {}
