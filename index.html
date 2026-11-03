@@ -3,59 +3,512 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>손쉬운PDF (FillGrid) 개인정보 처리방침 · Privacy Policy</title>
+<title>손쉬운PDF · FillGrid</title>
+<meta name="description" content="받은 PDF 서식을 엑셀처럼 칸 단위로 채우고, 감성 다이어리까지 쓰는 윈도 PC 앱 — 손쉬운PDF (FillGrid)">
+<meta property="og:title" content="손쉬운PDF · FillGrid">
+<meta property="og:description" content="PDF 서식은 엑셀처럼, 다이어리는 감성 그대로. 윈도 PC 앱.">
+<meta property="og:image" content="https://kys6960.github.io/FillGrid/img/j04.jpg">
+<link rel="icon" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@700&family=Noto+Sans+JP:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<!-- 22차 20일째 — 앱 소개 누리집. 원본: C:\src\formkit_app\site (여기서 고쳐 kys6960/FillGrid 저장소에 올린다) · 처리방침은 privacy/ -->
 <style>
-  body { font-family: system-ui, "Malgun Gothic", "Yu Gothic", sans-serif; max-width: 760px; margin: 0 auto; padding: 24px 16px; line-height: 1.7; color: #1b2733; background: #fff; }
-  h2 { color: #214F78; font-size: 1.3rem; margin-top: 2.2rem; }
-  section + section { border-top: 1px solid #dde3ea; margin-top: 2rem; }
-  li { margin: .4rem 0; }
+  :root {
+    color-scheme: light;
+    --paper: #FBF6EE;
+    --card: #FFFFFF;
+    --ink: #2E2A27;
+    --soft: #6E655D;
+    --line: #EADFD2;
+    --coral: #E8776A;
+    --coral-deep: #C95A4E;
+    --butter: #F6D88B;
+    --sage: #B8D3B0;
+    --sky: #A9C7EA;
+    --navy: #214F78;
+    --radius: 18px;
+    --head-bg: rgba(251, 246, 238, .88);
+    --chip: #F1E8DC;
+    --kick-bg: #FBE3DE;
+    --persona-bg: #FFF8EC;
+    --persona-line: #E9CFA3;
+    --phone-bg: #EEF4EC;
+    --phone-line: #D2E3CC;
+    --pro-a: #FFF6E0;
+    --pro-b: #FDEBE4;
+    --pro-line: #F0D6B8;
+    --btn: #2E2A27;
+    --btn-ink: #FFFFFF;
+    --shadow: rgba(90, 60, 30, .35);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --paper: #1D1A18; --card: #262220; --ink: #F2ECE5; --soft: #B8ADA2; --line: #3A332E;
+      --coral: #F08E82; --coral-deep: #F4A398; --navy: #1C3A57;
+      --head-bg: rgba(29, 26, 24, .86); --chip: #332D29; --kick-bg: #4A2C28;
+      --persona-bg: #2C2620; --persona-line: #5A4A35; --phone-bg: #232B22; --phone-line: #3B4A38;
+      --pro-a: #33291C; --pro-b: #3A2724; --pro-line: #5A4632;
+      --btn: #F2ECE5; --btn-ink: #1D1A18; --shadow: rgba(0, 0, 0, .6);
+    }
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink);
+    font-family: "Noto Sans KR", "Noto Sans JP", system-ui, "Malgun Gothic", sans-serif;
+    line-height: 1.65; -webkit-font-smoothing: antialiased; word-break: keep-all; overflow-wrap: anywhere;
+  }
+  :lang(ja) body, html[lang="ja"] body { font-family: "Noto Sans JP", "Noto Sans KR", system-ui, sans-serif; }
+  html, body { overflow-x: clip; }
+  img { max-width: 100%; height: auto; display: block; }
+  .hero .grid > *, .gallery > *, .forms > *, .ai > *, .plans > * { min-width: 0; }
+  a { color: inherit; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 20px; }
+
+  /* 머리 */
+  header {
+    position: sticky; top: 0; z-index: 10;
+    background: var(--head-bg); backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .bar { display: flex; align-items: center; gap: 16px; height: 64px; }
+  .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 800; font-size: 1.08rem; }
+  .brand img { width: 34px; height: 34px; border-radius: 8px; }
+  .brand small { font-weight: 500; color: var(--soft); font-size: .82rem; }
+  nav.links { display: flex; gap: 20px; margin-left: auto; font-size: .93rem; }
+  nav.links a { text-decoration: none; color: var(--soft); }
+  nav.links a:hover { color: var(--coral-deep); }
+  .langs { display: flex; gap: 2px; background: var(--chip); border-radius: 999px; padding: 3px; }
+  .langs button {
+    border: 0; background: transparent; font: inherit; font-size: .8rem; font-weight: 700;
+    padding: 5px 10px; border-radius: 999px; color: var(--soft); cursor: pointer;
+  }
+  .langs button[aria-pressed="true"] { background: var(--card); color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+
+  /* 첫 화면 */
+  .hero { padding: 72px 0 56px; }
+  .hero .grid { display: grid; grid-template-columns: 1fr 1.15fr; gap: 48px; align-items: center; }
+  .kicker {
+    display: inline-block; font-size: .85rem; font-weight: 700; color: var(--coral-deep);
+    background: var(--kick-bg); padding: 5px 12px; border-radius: 999px;
+  }
+  h1 { font-size: clamp(2rem, 4.4vw, 3.25rem); line-height: 1.22; margin: 18px 0 18px; letter-spacing: -.02em; font-weight: 800; }
+  h1 .hand { font-family: "Gaegu", "Noto Sans KR", cursive; color: var(--coral); font-size: .98em; }
+  .lead { font-size: 1.08rem; color: var(--soft); margin: 0 0 28px; max-width: 34em; }
+  .cta { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px; text-decoration: none; font-weight: 700;
+    padding: 13px 22px; border-radius: 999px; font-size: .98rem;
+  }
+  .btn.primary { background: var(--btn); color: var(--btn-ink); }
+  .btn.primary[aria-disabled="true"] { cursor: default; }
+  .btn.ghost { border: 1.5px solid var(--line); background: var(--card); }
+  .btn.ghost:hover { border-color: var(--coral); }
+  .pills { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; padding: 0; margin: 20px 0 0; }
+  .pills li { font-size: .84rem; font-weight: 500; background: var(--card); border: 1px solid var(--line); padding: 5px 12px; border-radius: 999px; }
+  .note { font-size: .84rem; color: var(--soft); margin-top: 14px; }
+
+  .stack { position: relative; }
+  .stack .page {
+    border-radius: 14px; overflow: hidden; background: var(--card);
+    box-shadow: 0 24px 48px -18px var(--shadow), 0 2px 6px rgba(90, 60, 30, .08);
+  }
+  .stack .back { position: absolute; width: 74%; right: -6%; top: -26px; transform: rotate(4deg); opacity: .96; }
+  .stack .front { position: relative; width: 88%; transform: rotate(-2deg); }
+  .sticker { position: absolute; width: 120px; filter: drop-shadow(0 6px 10px rgba(90,60,30,.18)); }
+  .sticker.a { left: -28px; bottom: -34px; transform: rotate(-8deg); }
+  .sticker.b { right: -10px; bottom: -40px; width: 104px; transform: rotate(7deg); }
+
+  /* 절 */
+  section.block { padding: 84px 0; }
+  section.alt { background: var(--card); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .head { max-width: 640px; margin-bottom: 36px; }
+  .head .tag { font-family: "Gaegu", cursive; font-size: 1.35rem; color: var(--coral); }
+  h2 { font-size: clamp(1.55rem, 3vw, 2.15rem); line-height: 1.3; margin: 4px 0 12px; letter-spacing: -.015em; }
+  .head p { color: var(--soft); margin: 0; }
+
+  /* 지은의 다이어리 */
+  .persona {
+    display: flex; gap: 16px; align-items: center; background: var(--persona-bg); border: 1px dashed var(--persona-line);
+    border-radius: var(--radius); padding: 16px 20px; margin-bottom: 32px; max-width: 720px;
+  }
+  .persona img { width: 64px; flex: none; }
+  .persona p { margin: 0; font-size: .95rem; }
+  .gallery { display: grid; grid-template-columns: repeat(12, 1fr); gap: 20px; }
+  .shot { margin: 0; background: var(--card); border-radius: 14px; overflow: hidden; border: 1px solid var(--line); cursor: zoom-in; }
+  .shot img { width: 100%; height: auto; transition: transform .35s ease; }
+  .shot:hover img { transform: scale(1.025); }
+  .shot figcaption { padding: 10px 14px 12px; font-size: .88rem; color: var(--soft); border-top: 1px solid var(--line); }
+  .g-half { grid-column: span 6; }
+  .g-third { grid-column: span 4; }
+
+  /* 서식 */
+  .forms { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+  .forms .shot { cursor: zoom-in; }
+  .feat { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 40px; }
+  .feat div { background: var(--paper); border-radius: 14px; padding: 20px; border: 1px solid var(--line); }
+  .alt .feat div { background: var(--paper); }
+  .feat b { display: block; margin-bottom: 4px; }
+  .feat span { color: var(--soft); font-size: .93rem; }
+  .feat i { font-style: normal; font-size: 1.4rem; display: block; margin-bottom: 6px; }
+
+  /* AI 일기 */
+  .ai { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: start; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 26px; }
+  .card h3 { margin: 0 0 10px; font-size: 1.12rem; }
+  .card ol, .card ul { margin: 0; padding-left: 1.2em; }
+  .card li { margin: 6px 0; }
+  .say {
+    font-family: "Gaegu", cursive; font-size: 1.35rem; background: var(--kick-bg); color: var(--coral-deep);
+    display: inline-block; padding: 4px 14px; border-radius: 12px 12px 12px 2px; margin: 6px 0 14px;
+  }
+  .phone { background: var(--phone-bg); border-color: var(--phone-line); }
+  .phone code { background: var(--card); border: 1px solid var(--phone-line); padding: 1px 6px; border-radius: 6px; font-size: .92em; }
+
+  /* 무료 · Pro */
+  .plans { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .plan { border-radius: var(--radius); padding: 28px; border: 1px solid var(--line); background: var(--card); }
+  .plan.pro { background: linear-gradient(160deg, var(--pro-a), var(--pro-b)); border-color: var(--pro-line); }
+  .plan h3 { margin: 0 0 4px; font-size: 1.3rem; }
+  .plan .price { color: var(--soft); margin-bottom: 14px; font-size: .95rem; }
+  .plan ul { margin: 0; padding-left: 1.2em; }
+  .plan li { margin: 5px 0; }
+
+  /* 믿음 */
+  .trust { display: flex; gap: 22px; align-items: center; background: var(--navy); color: #fff; border-radius: var(--radius); padding: 30px 34px; }
+  .trust i { font-style: normal; font-size: 2.2rem; }
+  .trust h3 { margin: 0 0 4px; }
+  .trust p { margin: 0; opacity: .85; }
+  .trust a { color: #fff; font-weight: 700; white-space: nowrap; margin-left: auto; }
+
+  footer { padding: 40px 0 56px; color: var(--soft); font-size: .88rem; }
+  footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 24px; }
+  footer a { text-decoration: none; }
+  footer a:hover { color: var(--coral-deep); }
+
+  /* 크게 보기 */
+  dialog#zoom { border: 0; padding: 0; background: transparent; max-width: 96vw; max-height: 94vh; }
+  dialog#zoom::backdrop { background: rgba(30, 24, 20, .82); }
+  dialog#zoom img { max-width: 96vw; max-height: 94vh; border-radius: 10px; cursor: zoom-out; }
+
+  @media (max-width: 860px) {
+    nav.links { display: none; }
+    .langs { margin-left: auto; }
+    .hero { padding: 40px 0 64px; }
+    .hero .grid, .forms, .ai, .plans { grid-template-columns: 1fr; }
+    .stack { margin: 10px 8px 0; }
+    .gallery { grid-template-columns: 1fr; }
+    .g-half, .g-third { grid-column: auto; }
+    .feat { grid-template-columns: 1fr; }
+    .trust { flex-direction: column; align-items: flex-start; }
+    .trust a { margin-left: 0; }
+    .sticker { width: 84px; }
+    .sticker.b { width: 74px; }
+    .sticker.a { left: -8px; }
+  }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .shot img { transition: none; } }
 </style>
 </head>
 <body>
-<section lang="ko">
-<h2>손쉬운PDF (FillGrid) 개인정보 처리방침</h2>
-<p>시행일: 2026년 10월 14일</p>
-<p>손쉬운PDF(영문 이름 FillGrid, 이하 &#x27;앱&#x27;)는 이용자의 개인정보를 수집하지 않습니다.</p>
-<ol>
-  <li><strong>문서와 작업 내용</strong> — 앱이 여는 PDF, 고친 내용(.edit.json), 도장 · 사인 그림은 모두 이용자의 PC 안에만 저장되며, 어디로도 보내지 않습니다.</li>
-  <li><strong>이용 기록</strong> — 앱은 사용 기록, 광고 식별자, 위치 정보를 수집하지 않습니다.</li>
-  <li><strong>글자 읽기(OCR)</strong> — 윈도에 들어 있는 OCR 과 앱에 함께 든 Tesseract 로 PC 안에서 처리합니다. 문서나 그림을 밖으로 보내지 않습니다.</li>
-  <li><strong>인터넷 사용</strong> — 윈도가 읽지 못하는 언어를 OCR 로 고르고 이용자가 [받기] 를 누른 때에만, 그 언어의 글자 데이터 파일 하나를 GitHub(github.com/tesseract-ocr)에서 받습니다. 이때 파일 요청 말고는 아무것도 보내지 않습니다.</li>
-  <li><strong>도움말 영상</strong> — 도움말 영상 단추를 누르면 기본 브라우저로 영상 누리집이 열리며, 그 누리집의 방침을 따릅니다.</li>
-  <li><strong>구입 · 체험판</strong> — 구입과 체험판 확인은 Microsoft Store 가 처리합니다. 이 과정의 정보는 Microsoft 개인정보 처리방침을 따르며, 앱 개발자에게 이용자의 개인정보가 전달되지 않습니다.</li>
-  <li><strong>바뀔 때</strong> — 인터넷을 쓰는 기능이 새로 생기면, 보내는 정보와 그 까닭을 이 글에 먼저 밝힙니다.</li>
-</ol>
-<p>문의: ksr6960@daum.net</p>
-</section>
-<section lang="en">
-<h2>FillGrid (손쉬운PDF) Privacy Policy</h2>
-<p>Effective date: October 14, 2026</p>
-<p>FillGrid (Korean name 손쉬운PDF, the &quot;App&quot;) does not collect personal information.</p>
-<ol>
-  <li><strong>Your documents</strong> — PDFs you open, your edits (.edit.json), seals and signatures are stored only on your PC and are never sent anywhere.</li>
-  <li><strong>Usage data</strong> — The App does not collect usage data, advertising identifiers or location.</li>
-  <li><strong>Text recognition (OCR)</strong> — OCR runs on your PC using the OCR built into Windows and the bundled Tesseract engine. Your documents and images are never sent anywhere.</li>
-  <li><strong>Internet use</strong> — Only when you choose an OCR language that Windows can&#x27;t read and click [Download], the App downloads that language&#x27;s text data file from GitHub (github.com/tesseract-ocr). Nothing is sent other than the request for that file.</li>
-  <li><strong>Help videos</strong> — The help video button opens the video website in your default browser; that website&#x27;s own policy applies.</li>
-  <li><strong>Purchase and trial</strong> — Purchases and trial checks are handled by the Microsoft Store under Microsoft&#x27;s privacy statement. No personal information is passed to the App&#x27;s developer.</li>
-  <li><strong>Changes</strong> — If a future version uses the internet in other ways, this policy will first state what is sent and why.</li>
-</ol>
-<p>Contact: ksr6960@daum.net</p>
-</section>
-<section lang="ja">
-<h2>FillGrid（손쉬운PDF）プライバシーポリシー</h2>
-<p>施行日: 2026年10月14日</p>
-<p>FillGrid（韓国語名 손쉬운PDF、以下「本アプリ」）は個人情報を収集しません。</p>
-<ol>
-  <li><strong>文書と作業内容</strong> — 開いた PDF・修正内容（.edit.json）・印鑑・サインはすべてお使いの PC 内にのみ保存され、外部へ送信されません。</li>
-  <li><strong>利用履歴</strong> — 利用履歴・広告 ID・位置情報は収集しません。</li>
-  <li><strong>文字認識（OCR）</strong> — Windows 内蔵の OCR と同梱の Tesseract により PC 内で処理されます。文書や画像は外部へ送信されません。</li>
-  <li><strong>インターネットの利用</strong> — Windows が読めない言語を OCR で選び、[取得] を押したときに限り、その言語の文字データファイルを GitHub（github.com/tesseract-ocr）から取得します。そのファイルの要求以外は何も送信しません。</li>
-  <li><strong>ヘルプ動画</strong> — ヘルプ動画ボタンを押すと既定のブラウザーで動画サイトが開き、そのサイトのポリシーが適用されます。</li>
-  <li><strong>購入・体験版</strong> — 購入と体験版の確認は Microsoft Store が行い、Microsoft のプライバシーに関する声明に従います。開発者に個人情報が渡ることはありません。</li>
-  <li><strong>変更</strong> — インターネットを使う機能を追加する場合は、送信する情報と理由を事前に本ポリシーに記載します。</li>
-</ol>
-<p>お問い合わせ: ksr6960@daum.net</p>
-</section>
+<header>
+  <div class="wrap bar">
+    <a class="brand" href="#top"><img src="img/icon.png" alt=""><span data-k="name">손쉬운PDF</span> <small data-k="brandSub">FillGrid</small></a>
+    <nav class="links">
+      <a href="#diary" data-k="navDiary">다이어리</a>
+      <a href="#forms" data-k="navForms">PDF 서식</a>
+      <a href="#ai" data-k="navAi">AI 일기</a>
+      <a href="#plans" data-k="navPlans">무료 · Pro</a>
+    </nav>
+    <div class="langs" role="group" aria-label="Language">
+      <button type="button" data-lang="ko">한</button>
+      <button type="button" data-lang="en">EN</button>
+      <button type="button" data-lang="ja">日</button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap grid">
+      <div>
+        <span class="kicker" data-k="kicker">윈도 PC 앱 · 18개 언어</span>
+        <h1><span data-k="h1a">PDF 서식은 엑셀처럼,</span><br><span class="hand" data-k="h1b">다이어리는 감성 그대로</span></h1>
+        <p class="lead" data-k="lead">받은 PDF 서식을 칸 단위로 바로 채우고, 도장·사인까지 찍어 내보냅니다. 같은 앱에서 스티커를 붙이며 다이어리를 꾸미고, AI 에게 말로 일기를 맡길 수도 있어요.</p>
+        <div class="cta">
+          <a class="btn primary" aria-disabled="true" data-k="store">Microsoft Store 출시 준비 중</a>
+          <a class="btn ghost" href="#diary" data-k="seeSample">지은의 다이어리 보기 ↓</a>
+        </div>
+        <ul class="pills">
+          <li data-k="pill1">🔒 문서는 내 PC 안에서만</li>
+          <li data-k="pill2">👤 회원가입 없음</li>
+          <li data-k="pill3">⚡ 서식·노트는 인터넷 없이도</li>
+        </ul>
+        <p class="note" data-k="heroNote">Windows 10 · 11 · 무료로 쓰고, 필요할 때만 Pro (한 번 구입)</p>
+      </div>
+      <div class="stack" aria-hidden="true">
+        <img class="page back" src="img/d04.jpg" alt="" width="1200" height="848" fetchpriority="high">
+        <img class="page front" src="img/j04.jpg" alt="" width="1200" height="848" fetchpriority="high">
+        <img class="sticker a" src="img/mochi_diary_writing.png" alt="">
+        <img class="sticker b" src="img/dubu_mood_happy.png" alt="">
+      </div>
+    </div>
+  </section>
+
+  <section class="block alt" id="diary">
+    <div class="wrap">
+      <div class="head">
+        <div class="tag" data-k="diaryTag">지은의 2026</div>
+        <h2 data-k="diaryH">한 해 다이어리를 PC 에서 꾸며요</h2>
+        <p data-k="diaryP">먼슬리 · 위클리 · 하루 일기 · 플래너 서식을 새 노트로 만들고, 손글씨 글꼴과 스티커·사진·마스킹테이프로 꾸밉니다. 아래는 모두 앱 안에서 만든 실제 샘플이에요.</p>
+      </div>
+      <div class="persona">
+        <img src="img/mochi_diary_good_job.png" alt="">
+        <p data-k="persona">지은 (26) — 자취 3년 차 · IT 회사 다니는 직장인. 갓생과 게으름 사이를 오가며, 소소한 기쁨을 하루 한 줄씩 남깁니다.</p>
+      </div>
+      <div class="gallery">
+        <figure class="shot g-half"><img src="img/d04.jpg" alt="" width="1200" height="848" loading="lazy" decoding="async"><figcaption data-k="capMonthly">먼슬리 — 달의 목표 · 기분 · 작은 기쁨</figcaption></figure>
+        <figure class="shot g-half"><img src="img/j03.jpg" alt="" width="1200" height="848" loading="lazy" decoding="async"><figcaption data-k="capJournal">하루 일기 — 네 컷 · 영수증 · 오늘의 플레이리스트</figcaption></figure>
+        <figure class="shot g-third"><img src="img/j05.jpg" alt="" width="1200" height="848" loading="lazy" decoding="async"><figcaption data-k="capPhoto">사진 · 폴라로이드 · 무비 티켓</figcaption></figure>
+        <figure class="shot g-third"><img src="img/j08.jpg" alt="" width="1200" height="848" loading="lazy" decoding="async"><figcaption data-k="capFood">먹은 것도 기억으로</figcaption></figure>
+        <figure class="shot g-third"><img src="img/d28.jpg" alt="" width="1200" height="848" loading="lazy" decoding="async"><figcaption data-k="capWeekly">위클리 — 하루 한 칸 · 기분 · 습관</figcaption></figure>
+        <figure class="shot g-half"><img src="img/j07.jpg" alt="" width="1200" height="848" loading="lazy" decoding="async"><figcaption data-k="capSunset">마음에 남은 장면</figcaption></figure>
+        <figure class="shot g-half"><img src="img/p16.jpg" alt="" width="1200" height="848" loading="lazy" decoding="async"><figcaption data-k="capPlanner">플래너 — 할 일 · 습관 트래커 · 주간 회고 · 보상</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="forms">
+    <div class="wrap">
+      <div class="head">
+        <div class="tag" data-k="formsTag">일할 때는</div>
+        <h2 data-k="formsH">받은 PDF 서식, 다시 만들지 마세요</h2>
+        <p data-k="formsP">PDF 를 연 그 자리에서 칸을 눌러 씁니다. 화살표 · Tab · Enter 로 엑셀처럼 옮겨 다니고, 원래 글꼴·자간을 지키며 고칩니다.</p>
+      </div>
+      <div class="forms">
+        <figure class="shot"><img data-img="02_autofill" src="img/02_autofill_ko.jpg" alt="" width="1400" height="736" loading="lazy" decoding="async"><figcaption data-k="capFill">칸을 끌어 1, 2, 3… 이어 채우기 · 합계 바로 보기</figcaption></figure>
+        <figure class="shot"><img data-img="04_signed" src="img/04_signed_ko.jpg" alt="" width="1400" height="736" loading="lazy" decoding="async"><figcaption data-k="capSign">날짜 · 사인까지 넣고 PDF 로 내보내기</figcaption></figure>
+      </div>
+      <div class="feat">
+        <div><i>▦</i><b data-k="f1">엑셀처럼 칸 채우기</b><span data-k="f1s">=SUM(B2:B5) 같은 식 · 끌어서 이어 채우기</span></div>
+        <div><i>✎</i><b data-k="f2">원래 글 그 자리에서 고치기</b><span data-k="f2s">글꼴 · 크기 · 자간을 그대로 지킵니다</span></div>
+        <div><i>㊞</i><b data-k="f3">도장 · 스탬프 · 사인</b><span data-k="f3s">실물 크기로 찍고 바로 인쇄</span></div>
+        <div><i>⧉</i><b data-k="f4">쪽 편집</b><span data-k="f4s">차례 바꾸기 · 지우기 · 다른 PDF 쪽 넣기</span></div>
+        <div><i>⌕</i><b data-k="f5">스캔도 글자로 (OCR)</b><span data-k="f5s">그림 글자를 진짜 글자로 바꿉니다</span></div>
+        <div><i>✐</i><b data-k="f6">필기 · 형광펜</b><span data-k="f6s">볼펜 · 만년필 · 캘리그래피펜 · 손떨림 보정</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block alt" id="ai">
+    <div class="wrap">
+      <div class="head">
+        <div class="tag" data-k="aiTag">바쁜 날엔</div>
+        <h2 data-k="aiH">"오늘 일기 써 줘" 한마디면 노트에</h2>
+        <p data-k="aiP">손쉬운PDF 를 Claude · ChatGPT 데스크톱 앱에 이어 두면, 대화에서 말한 하루가 내 다이어리 쪽에 날짜 · 기분 · 스티커와 함께 써집니다.</p>
+      </div>
+      <div class="ai">
+        <div class="card">
+          <h3 data-k="aiHow">이어 두는 법</h3>
+          <div class="say" data-k="aiSay">오늘 일기 써 줘 ✍️</div>
+          <ol>
+            <li data-k="aiS1">Claude 또는 ChatGPT 데스크톱 앱을 PC 에 내려받아 설치하고 로그인합니다.</li>
+            <li data-k="aiS2">손쉬운PDF 위쪽의 🤖 단추(AI 앱에 연결)를 누르고, 그 앱 옆 [연결] 을 누릅니다.</li>
+            <li data-k="aiS3">그 앱을 다시 켜고, 새 대화에서 하루 이야기를 들려주세요.</li>
+          </ol>
+        </div>
+        <div class="card phone">
+          <h3 data-k="phoneH">📱 폰에서 말로 쓰기</h3>
+          <p data-k="phoneP" style="margin:0 0 10px">데스크톱 앱을 스마트폰과 원격으로 이어 두면, 폰 마이크로 말한 일기가 PC 의 노트에 써집니다 (PC 는 켜 두기).</p>
+          <ul>
+            <li data-k="phoneC"><b>Claude</b> — PC 의 Claude 에서 <code>/rc</code> 를 입력해 스마트폰과 연결</li>
+            <li data-k="phoneG"><b>ChatGPT</b> — 설정 › 연결 › '이 PC 를 제어할 수 있는 기기' 에 스마트폰 추가</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="plans">
+    <div class="wrap">
+      <div class="head">
+        <div class="tag" data-k="plansTag">값</div>
+        <h2 data-k="plansH">서식 채우기는 모두 무료</h2>
+        <p data-k="plansP">처음 설치하면 14일 동안 Pro 를 모두 무료로 써 볼 수 있어요. 체험이 끝나도 무료 기능은 그대로입니다.</p>
+      </div>
+      <div class="plans">
+        <div class="plan">
+          <h3 data-k="freeH">무료</h3>
+          <div class="price" data-k="freeP">기간 제한 없음</div>
+          <ul>
+            <li data-k="fr1">칸 채우기 · 원래 글 고치기 · 엑셀 식 · 이어 채우기</li>
+            <li data-k="fr2">사인 · 오피스 스탬프 · 표 · 도형 · 아이콘</li>
+            <li data-k="fr3">쪽 편집 · 찾기·바꾸기 · 필기 · 형광펜</li>
+            <li data-k="fr4">새 노트 서식 10가지 · 저장 · 인쇄 · PDF 내보내기</li>
+          </ul>
+        </div>
+        <div class="plan pro">
+          <h3>Pro</h3>
+          <div class="price" data-k="proP">앱 안에서 한 번 구입 · 구독 아님</div>
+          <ul>
+            <li data-k="pr1">감성 다이어리 · 플래너 서식 · 스티커 뭉치</li>
+            <li data-k="pr2">한국식 도장 · 해외 인장 · 수식 · OCR</li>
+            <li data-k="pr3">붓펜 · 캘리그래피펜 · 모양 펜 · 메모장</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" style="padding-top:0">
+    <div class="wrap">
+      <div class="trust">
+        <i>🔒</i>
+        <div>
+          <h3 data-k="trustH">문서는 내 PC 밖으로 나가지 않아요</h3>
+          <p data-k="trustP">원본 PDF 는 그대로 두고, 고친 것은 따로 저장합니다. 개인정보를 모으지 않습니다.</p>
+        </div>
+        <a href="privacy/" data-k="privacy">개인정보 처리방침 →</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 <span data-k="name">손쉬운PDF</span> (FillGrid)</span>
+    <a href="privacy/" data-k="privacyShort">개인정보 처리방침</a>
+    <a href="mailto:ksr6960@daum.net">ksr6960@daum.net</a>
+  </div>
+</footer>
+
+<dialog id="zoom"><img alt=""></dialog>
+
+<script>
+  // 말 세 벌 — 처음 글은 HTML 의 한국어 · 브라우저 언어가 일본어면 일, 한국어가 아니면 영어
+  var T = {
+    en: {
+      name: "FillGrid", brandSub: "", navDiary: "Diary", navForms: "PDF forms", navAi: "AI journal", navPlans: "Free · Pro",
+      kicker: "Windows PC app · 18 languages",
+      h1a: "Fill PDF forms like a spreadsheet,", h1b: "decorate your diary like paper",
+      lead: "Type straight into the boxes of any PDF form, add seals and signatures, and export. In the same app, decorate a yearly diary with stickers — or just tell an AI about your day.",
+      pill1: "🔒 Files stay on your PC", pill2: "👤 No sign-up", pill3: "⚡ Forms & notes work offline",
+      store: "Coming soon to Microsoft Store", seeSample: "See Jieun's diary ↓",
+      heroNote: "Windows 10 · 11 · Free to use, Pro only when you need it (one-time purchase)",
+      diaryTag: "Jieun's 2026", diaryH: "A whole year of diary, decorated on your PC",
+      diaryP: "Create monthly, weekly, daily-journal and planner pages as new notes, then decorate them with handwriting fonts, stickers, photos and washi tape. Every page below is a real sample made in the app.",
+      persona: "Jieun (26) — living on her own, three years into an IT job. Somewhere between hustle and lazy days, she keeps one small joy a day.",
+      capMonthly: "Monthly — goals · mood · little joys", capJournal: "Daily journal — photo strip · receipt · today's playlist",
+      capPhoto: "Photos · polaroids · movie tickets", capFood: "What you ate becomes a memory", capWeekly: "Weekly — a box a day · mood · habits",
+      capSunset: "A scene that stayed with you", capPlanner: "Planner — to-dos · habit tracker · weekly review · rewards",
+      formsTag: "At work", formsH: "Stop rebuilding PDF forms you received",
+      formsP: "Click a box right where it is and type. Move with arrows, Tab and Enter like a spreadsheet, and edit existing text keeping its font and spacing.",
+      capFill: "Drag to fill 1, 2, 3… · see the sum instantly", capSign: "Add the date and signature, then export a PDF",
+      f1: "Fill boxes like a spreadsheet", f1s: "Formulas like =SUM(B2:B5) · drag to fill",
+      f2: "Edit original text in place", f2s: "Keeps font, size and spacing",
+      f3: "Seals · stamps · signatures", f3s: "Real size, ready to print",
+      f4: "Page editing", f4s: "Reorder · delete · insert pages from other PDFs",
+      f5: "Scans into text (OCR)", f5s: "Turns pictures of text into real text",
+      f6: "Pens · highlighter", f6s: "Ballpoint · fountain · calligraphy · smoothing",
+      aiTag: "On busy days", aiH: "Say \"write today's journal\" — it lands in your note",
+      aiP: "Connect FillGrid to the Claude or ChatGPT desktop app, and the day you talk about is written onto your diary page with date, mood and stickers.",
+      aiHow: "How to connect", aiSay: "Write today's journal ✍️",
+      aiS1: "Download, install and sign in to the Claude or ChatGPT desktop app on your PC.",
+      aiS2: "In FillGrid, click the 🤖 button at the top (Connect to AI apps) and press [Connect] next to that app.",
+      aiS3: "Restart that app and tell it about your day in a new chat.",
+      phoneH: "📱 Dictate from your phone",
+      phoneP: "Link the desktop app to your phone in remote mode, and what you say into the phone's mic is written into your notes on the PC (keep the PC on).",
+      phoneC: "<b>Claude</b> — type <code>/rc</code> in Claude on the PC to link your phone",
+      phoneG: "<b>ChatGPT</b> — Settings › Connections › add your phone under 'Devices that can control this PC'",
+      plansTag: "Price", plansH: "Filling forms is free",
+      plansP: "Try every Pro feature free for 14 days after installing. Free features stay free when the trial ends.",
+      freeH: "Free", freeP: "No time limit",
+      fr1: "Fill boxes · edit original text · formulas · fill series", fr2: "Signatures · office stamps · tables · shapes · icons",
+      fr3: "Page editing · find & replace · pens · highlighter", fr4: "10 new-note templates · save · print · PDF export",
+      proP: "One-time in-app purchase · not a subscription",
+      pr1: "Aesthetic diary & planner templates · sticker packs", pr2: "Korean seals · world seals · equations · OCR", pr3: "Brush · calligraphy · shape pens · memo pad",
+      trustH: "Your documents never leave your PC", trustP: "The original PDF stays untouched; your edits are saved separately. No personal data is collected.",
+      privacy: "Privacy policy →", privacyShort: "Privacy policy"
+    },
+    ja: {
+      name: "FillGrid", brandSub: "", navDiary: "ダイアリー", navForms: "PDF書式", navAi: "AI日記", navPlans: "無料・Pro",
+      kicker: "Windows PC アプリ · 18言語",
+      h1a: "PDF書式はエクセルのように、", h1b: "ダイアリーはエモく可愛く",
+      lead: "受け取ったPDF書式のマスにそのまま入力し、印鑑やサインまで入れて書き出せます。同じアプリでステッカーを貼って手帳を飾ったり、AIに話すだけで日記を書いてもらえます。",
+      pill1: "🔒 書類はPCの中だけ", pill2: "👤 会員登録なし", pill3: "⚡ 書式・ノートはオフラインでも",
+      store: "Microsoft Store で近日公開", seeSample: "ジウンのダイアリーを見る ↓",
+      heroNote: "Windows 10 · 11 · 無料で使えて、必要なときだけ Pro(買い切り)",
+      diaryTag: "ジウンの2026", diaryH: "一年分のダイアリーをPCでデコ",
+      diaryP: "マンスリー・ウィークリー・日記・プランナーを新しいノートとして作り、手書きフォント・ステッカー・写真・マステで飾ります。下はすべてアプリで作った実際のサンプルです。",
+      persona: "ジウン(26)— 一人暮らし3年目、IT企業で働く会社員。がんばる日とだらける日のあいだで、小さな幸せを一日一行ずつ残しています。",
+      capMonthly: "マンスリー — 月の目標・気分・小さな幸せ", capJournal: "日記 — 4コマ写真・レシート・今日のプレイリスト",
+      capPhoto: "写真・ポラロイド・映画チケット", capFood: "食べたものも思い出に", capWeekly: "ウィークリー — 一日一マス・気分・習慣",
+      capSunset: "心に残った景色", capPlanner: "プランナー — やること・習慣トラッカー・週の振り返り・ごほうび",
+      formsTag: "仕事では", formsH: "受け取ったPDF書式、作り直さないで",
+      formsP: "PDFを開いたその場でマスをクリックして入力。矢印・Tab・Enterでエクセルのように移動し、元のフォントや字間を保ったまま直せます。",
+      capFill: "ドラッグで1, 2, 3…と連続入力 · 合計もすぐ確認", capSign: "日付とサインを入れてPDFに書き出し",
+      f1: "エクセルのようにマスを埋める", f1s: "=SUM(B2:B5) などの式 · ドラッグで連続入力",
+      f2: "元の文字をその場で修正", f2s: "フォント・サイズ・字間をそのまま",
+      f3: "印鑑・スタンプ・サイン", f3s: "実物大で押してすぐ印刷",
+      f4: "ページ編集", f4s: "並べ替え・削除・ほかのPDFのページを挿入",
+      f5: "スキャンも文字に(OCR)", f5s: "画像の文字を本物の文字に",
+      f6: "手書き・蛍光ペン", f6s: "ボールペン・万年筆・カリグラフィー・手ぶれ補正",
+      aiTag: "忙しい日は", aiH: "「今日の日記を書いて」のひと言でノートに",
+      aiP: "FillGrid を Claude・ChatGPT のデスクトップアプリにつなぐと、会話で話した一日が、日付・気分・ステッカーと一緒にダイアリーのページに書き込まれます。",
+      aiHow: "つなぎ方", aiSay: "今日の日記を書いて ✍️",
+      aiS1: "Claude または ChatGPT のデスクトップアプリをPCにダウンロード・インストールし、ログインします。",
+      aiS2: "FillGrid 上部の 🤖 ボタン(AI アプリに接続)を押し、そのアプリの横の [接続] を押します。",
+      aiS3: "そのアプリを再起動し、新しい会話で一日の話を聞かせてください。",
+      phoneH: "📱 スマホから声で書く",
+      phoneP: "デスクトップアプリをスマートフォンとリモートでつなぐと、スマホのマイクで話した日記がPCのノートに書かれます(PCは電源を入れたまま)。",
+      phoneC: "<b>Claude</b> — PC の Claude で <code>/rc</code> と入力してスマートフォンと接続",
+      phoneG: "<b>ChatGPT</b> — 設定 › 接続 › 「この PC を操作できるデバイス」にスマートフォンを追加",
+      plansTag: "料金", plansH: "書式の入力はすべて無料",
+      plansP: "インストール後14日間は Pro をすべて無料で試せます。体験が終わっても無料機能はそのまま使えます。",
+      freeH: "無料", freeP: "期間制限なし",
+      fr1: "マス入力・元の文字の修正・エクセル式・連続入力", fr2: "サイン・オフィススタンプ・表・図形・アイコン",
+      fr3: "ページ編集・検索と置換・手書き・蛍光ペン", fr4: "新規ノート10種・保存・印刷・PDF書き出し",
+      proP: "アプリ内で買い切り · サブスクではありません",
+      pr1: "エモいダイアリー・プランナー書式・ステッカーパック", pr2: "韓国式印鑑・海外の印章・数式・OCR", pr3: "筆ペン・カリグラフィーペン・図形ペン・メモ帳",
+      trustH: "書類はPCの外に出ません", trustP: "元のPDFはそのまま、直した内容は別に保存します。個人情報は集めません。",
+      privacy: "プライバシーポリシー →", privacyShort: "プライバシーポリシー"
+    }
+  };
+  var KO = {};
+  document.querySelectorAll("[data-k]").forEach(function (e) { if (!(e.dataset.k in KO)) KO[e.dataset.k] = e.innerHTML; });
+  T.ko = KO;
+
+  function setLang(l) {
+    var d = T[l] || T.en;
+    document.documentElement.lang = l;
+    document.querySelectorAll("[data-k]").forEach(function (e) { var v = d[e.dataset.k]; if (v != null) e.innerHTML = v; });
+    document.querySelectorAll("img[data-img]").forEach(function (e) { e.src = "img/" + e.dataset.img + "_" + l + ".jpg"; });
+    document.querySelectorAll(".langs button").forEach(function (b) { b.setAttribute("aria-pressed", b.dataset.lang === l); });
+    document.title = l === "ko" ? "손쉬운PDF · FillGrid" : "FillGrid · 손쉬운PDF";
+    try { localStorage.setItem("fg_lang", l); } catch (e) {}
+  }
+  var saved = null;
+  try { saved = localStorage.getItem("fg_lang"); } catch (e) {}
+  var nav = (navigator.language || "en").slice(0, 2);
+  setLang(saved || (nav === "ko" || nav === "ja" ? nav : "en"));
+  document.querySelectorAll(".langs button").forEach(function (b) { b.onclick = function () { setLang(b.dataset.lang); }; });
+
+  // 그림을 누르면 크게
+  var zoom = document.getElementById("zoom"), zi = zoom.querySelector("img");
+  var shots = Array.prototype.slice.call(document.querySelectorAll(".shot img")), at = 0;
+  function show(i) { at = (i + shots.length) % shots.length; zi.src = shots[at].src; }
+  shots.forEach(function (im, i) {
+    im.tabIndex = 0;
+    im.onclick = function () { show(i); zoom.showModal(); };
+    im.onkeydown = function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); im.onclick(); } };
+  });
+  zoom.onclick = function () { zoom.close(); };
+  document.addEventListener("keydown", function (e) {
+    if (!zoom.open) return;
+    if (e.key === "ArrowRight") show(at + 1);
+    if (e.key === "ArrowLeft") show(at - 1);
+  });
+</script>
 </body>
 </html>
